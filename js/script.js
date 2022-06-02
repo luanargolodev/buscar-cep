@@ -102,3 +102,33 @@ const toggleMessage = (title, msg) => {
 closeButton.addEventListener("click", () => {
   toggleMessage();
 });
+
+// Save address
+addressForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  toggleLoader();
+
+  setTimeout(() => {
+    toggleLoader();
+    toggleMessage("Sucesso", "Endereço salvo com sucesso!");
+    addressForm.reset();
+    toggleDisabled();
+
+    saveAddress();
+  }, 1500);
+});
+
+const saveAddress = () => {
+  const address = {
+    cep: cepInput.value,
+    address: addressInput.value,
+    city: cityInput.value,
+    neighborhood: neighborhoodInput.value,
+    region: regionInput.value,
+  };
+
+  localStorage.setItem("address", JSON.stringify(address));
+
+  addressForm.reset();
+};
