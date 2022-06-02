@@ -1,6 +1,8 @@
 const addressForm = document.querySelector("#address-form");
 const cepInput = document.querySelector("#cep");
 const addressInput = document.querySelector("#address");
+const numberInput = document.querySelector("#number");
+const complementInput = document.querySelector("#complement");
 const cityInput = document.querySelector("#city");
 const neighborhoodInput = document.querySelector("#neighborhood");
 const regionInput = document.querySelector("#region");
@@ -53,9 +55,7 @@ const getAddress = async (cep) => {
     return;
   }
 
-  if (addressInput.value === "") {
-    toggleDisabled();
-  }
+  toggleDisabled();
 
   // fill inputs
   addressInput.value = data.logradouro;
@@ -112,7 +112,6 @@ addressForm.addEventListener("submit", (e) => {
   setTimeout(() => {
     toggleLoader();
     toggleMessage("Sucesso", "Endereço salvo com sucesso!");
-    addressForm.reset();
     toggleDisabled();
 
     saveAddress();
@@ -126,9 +125,26 @@ const saveAddress = () => {
     city: cityInput.value,
     neighborhood: neighborhoodInput.value,
     region: regionInput.value,
+    number: numberInput.value,
+    complement: complementInput.value,
   };
 
   localStorage.setItem("address", JSON.stringify(address));
-
-  addressForm.reset();
 };
+
+const loadAddress = () => {
+  const address = JSON.parse(localStorage.getItem("address"));
+
+  if (address) {
+    cepInput.value = address.cep;
+    addressInput.value = address.address;
+    cityInput.value = address.city;
+    neighborhoodInput.value = address.neighborhood;
+    regionInput.value = address.region;
+    numberInput.value = address.number;
+    complementInput.value = address.complement;
+    toggleDisabled();
+  }
+};
+
+loadAddress();
