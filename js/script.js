@@ -15,5 +15,35 @@ cepInput.addEventListener("keypress", (e) => {
   // allow only numbers
   if (!onlyNumbers.test(key)) {
     e.preventDefault();
+    return;
   }
 });
+
+// Get address event
+cepInput.addEventListener("keyup", (e) => {
+  const inputValue = e.target.value;
+
+  // check if we have correct length
+  if (inputValue.length === 8) {
+    getAddress(inputValue);
+  }
+});
+
+// Get customer address from API
+const getAddress = async (cep) => {
+  const url = `https://viacep.com.br/ws/${cep}/json/`;
+  const response = await fetch(url);
+  const data = await response.json();
+
+  // if we have data
+  if (data.erro) {
+    showMessage("CEP inválido");
+    return;
+  }
+
+  // fill inputs
+  addressInput.value = data.logradouro;
+  cityInput.value = data.localidade;
+  neighborhoodInput.value = data.bairro;
+  regionInput.value = data.uf;
+};
