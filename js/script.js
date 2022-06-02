@@ -6,6 +6,7 @@ const neighborhoodInput = document.querySelector("#neighborhood");
 const regionInput = document.querySelector("#region");
 const formInputs = document.querySelectorAll("[data-input]");
 const closeButton = document.querySelector("#close-message");
+const fadeElement = document.querySelector("#fade");
 
 // Validate CEP input
 cepInput.addEventListener("keypress", (e) => {
@@ -38,8 +39,10 @@ const getAddress = async (cep) => {
   const data = await response.json();
 
   // if we have data
-  if (data.erro) {
-    showMessage("CEP inválido");
+  if (data.erro === "true") {
+    addressForm.reset();
+    toggleLoader();
+    toggleMessage("CEP inválido, tente novamente!");
     return;
   }
 
@@ -51,10 +54,20 @@ const getAddress = async (cep) => {
   toggleLoader();
 };
 
+// Show or hide loader
 const toggleLoader = () => {
-  const fadeElement = document.querySelector("#fade");
   const loaderElement = document.querySelector("#loader");
 
   fadeElement.classList.toggle("hide");
   loaderElement.classList.toggle("hide");
+};
+
+// Show or hider message
+const toggleMessage = (msg) => {
+  const messageElement = document.querySelector("#message");
+  const messageElementText = document.querySelector("#message p");
+
+  messageElementText.innerText = msg;
+  fadeElement.classList.toggle("hide");
+  messageElement.classList.toggle("hide");
 };
