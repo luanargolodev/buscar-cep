@@ -40,6 +40,10 @@ const getAddress = async (cep) => {
 
   // if we have data
   if (data.erro === "true") {
+    if (!addressInput.hasAttribute("disabled")) {
+      toggleDisabled();
+    }
+
     addressForm.reset();
     toggleLoader();
     toggleMessage(
@@ -49,12 +53,29 @@ const getAddress = async (cep) => {
     return;
   }
 
+  if (addressInput.value === "") {
+    toggleDisabled();
+  }
+
   // fill inputs
   addressInput.value = data.logradouro;
   cityInput.value = data.localidade;
   neighborhoodInput.value = data.bairro;
   regionInput.value = data.uf;
   toggleLoader();
+};
+
+// Add or remove disabled attribute
+const toggleDisabled = () => {
+  if (regionInput.hasAttribute("disabled")) {
+    formInputs.forEach((input) => {
+      input.removeAttribute("disabled");
+    });
+  } else {
+    formInputs.forEach((input) => {
+      input.setAttribute("disabled", "disabled");
+    });
+  }
 };
 
 // Show or hide loader
