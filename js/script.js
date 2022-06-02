@@ -31,6 +31,8 @@ cepInput.addEventListener("keyup", (e) => {
 
 // Get customer address from API
 const getAddress = async (cep) => {
+  toggleLoader();
+
   const url = `https://viacep.com.br/ws/${cep}/json/`;
   const response = await fetch(url);
   const data = await response.json();
@@ -46,4 +48,13 @@ const getAddress = async (cep) => {
   cityInput.value = data.localidade;
   neighborhoodInput.value = data.bairro;
   regionInput.value = data.uf;
+  toggleLoader();
+};
+
+const toggleLoader = () => {
+  const fadeElement = document.querySelector("#fade");
+  const loaderElement = document.querySelector("#loader");
+
+  fadeElement.classList.toggle("hide");
+  loaderElement.classList.toggle("hide");
 };
