@@ -42,7 +42,10 @@ const getAddress = async (cep) => {
   if (data.erro === "true") {
     addressForm.reset();
     toggleLoader();
-    toggleMessage("CEP inválido, tente novamente!");
+    toggleMessage(
+      "Algo inesperado aconteceu",
+      "CEP inválido, tente novamente!"
+    );
     return;
   }
 
@@ -62,12 +65,19 @@ const toggleLoader = () => {
   loaderElement.classList.toggle("hide");
 };
 
-// Show or hider message
-const toggleMessage = (msg) => {
+// Show or hide message
+const toggleMessage = (title, msg) => {
   const messageElement = document.querySelector("#message");
+  const messageTitle = document.querySelector("#message h4");
   const messageElementText = document.querySelector("#message p");
 
+  messageTitle.innerText = title;
   messageElementText.innerText = msg;
   fadeElement.classList.toggle("hide");
   messageElement.classList.toggle("hide");
 };
+
+// Close message modal
+closeButton.addEventListener("click", () => {
+  toggleMessage();
+});
